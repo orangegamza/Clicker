@@ -29,6 +29,7 @@ public class DataController : MonoBehaviour {
     }
 
     private ItemButton[] itemButtons;
+    private BuyController[] buyControllers;
 
     DateTime GetLastPlayDate()
     {
@@ -93,6 +94,10 @@ public class DataController : MonoBehaviour {
     private void Awake()
     {
         itemButtons = FindObjectsOfType<ItemButton>();
+        buyControllers = FindObjectsOfType<BuyController>();
+
+        
+        
     }
 
     private void Start()
@@ -154,6 +159,48 @@ public class DataController : MonoBehaviour {
         else
         {
             PlayerPrefs.SetInt(key + "_isPurchased", 0);
+        }
+    }
+
+    public void LoadBuy(BuyController buyController)
+    {
+        string key = buyController.buyName;
+
+        if (PlayerPrefs.GetInt(key + "_isBought") == 1)
+        {
+            buyController.isBought = true;
+        }
+        else
+        {
+            buyController.isBought = false;
+        }
+    }
+
+    public void SaveBuy(BuyController buyController)
+    {
+        string key = buyController.buyName;
+
+        if (buyController.isBought == true)
+        {
+            PlayerPrefs.SetInt(key + "_isBought", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt(key + "_isBought", 0);
+        }
+    }
+
+    public void GetBuy()
+    {
+        List<string> buys = new List<string>(new string[]
+        {
+            "cake", "unicorn", "lamp", "rocket", "star"
+        });
+
+        foreach (string b in buys)
+        {
+            if (PlayerPrefs.GetInt(b + "_isBought") == 1)
+                GameObject.Find(b).SetActive(true);
         }
     }
 

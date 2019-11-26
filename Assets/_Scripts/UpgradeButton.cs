@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UpgradeButton : MonoBehaviour {
 
+    public static UpgradeButton instance = null;
+
     public AudioSource soundFx;
 
     public string upgradeName;
@@ -24,10 +26,20 @@ public class UpgradeButton : MonoBehaviour {
     public float upgradePow = 1.07f;
     public float costPow = 3.14f;
 
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
     private void Start()
     {
         DataController.Instance.LoadUpgradeButton(this);
+
+        currentCost = startCurrentCost;
+        goldByUpgrade = startGoldByUpgrade;
         UpdateUI();
+        UpdateUpgrade();
     }
 
     public void PurchaseUpgrade()
@@ -56,5 +68,10 @@ public class UpgradeButton : MonoBehaviour {
     {
         upgradeDisplay.text = upgradeName + "\n\nCost: " + currentCost + 
             "\nLevel :" + level + "\nNext Gained Peace: " + goldByUpgrade;
+    }
+
+    private void Update()
+    {
+        UpdateUI();
     }
 }

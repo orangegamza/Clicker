@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ItemButton : MonoBehaviour {
 
+    public static ItemButton instance = null;
 
     public Text itemDisplayer;
 
@@ -27,10 +28,16 @@ public class ItemButton : MonoBehaviour {
     public float upgradePow = 1.07f;
 
     [HideInInspector] public bool isPurchased = false;
+    [HideInInspector] public bool isRestarted = false;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
 
     private void Start()
     {
-
         DataController.Instance.LoadItemButton(this);
 
         StartCoroutine("AddGoldLoop");
@@ -39,6 +46,7 @@ public class ItemButton : MonoBehaviour {
         goldPerSec = startGoldPerSec;
         UpdateUI();
         UpdateItem();
+
     }
 
     public void PurchaseItem()
@@ -101,6 +109,8 @@ public class ItemButton : MonoBehaviour {
 
     private void Update()
     {
+
         UpdateUI();
+
     }
 }
